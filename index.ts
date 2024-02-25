@@ -3,11 +3,11 @@
 
 // Create a GitHub repository for the project and submit its URL in the project submission form.
 
-import chalk from 'chalk';
-import inquirer from 'inquirer';
-import { exit } from 'process';
+import chalk from "chalk";
+import inquirer from "inquirer";
+import { exit } from "process";
 
-// User class to represent a user's account 
+// User class to represent a user's account
 class User {
   id: number;
   pin: number;
@@ -39,21 +39,25 @@ class ATM {
   async login() {
     const { id, pin } = await inquirer.prompt([
       {
-        name: 'id',
-        message: 'Enter user id:'
+        name: "id",
+        message: "Enter user id:",
       },
       {
-        name: 'pin',
-        message: 'Enter PIN:',
-        type: 'password'
-      }
+        name: "pin",
+        message: "Enter PIN:",
+        type: "password",
+      },
     ]);
-    if (this.user && this.user.id === parseInt(id) && this.user.pin === parseInt(pin)) {
+    if (
+      this.user &&
+      this.user.id === parseInt(id) &&
+      this.user.pin === parseInt(pin)
+    ) {
       this.user.loggedIn = true;
       console.log("Login successful!");
     } else {
       console.log("Invalid user id or pin!");
-      exit()
+      exit();
     }
   }
 
@@ -107,7 +111,7 @@ class ATM {
     console.log(`Your new balance is ${this.user.balance}`);
   }
 
-  // Logout  
+  // Logout
   logout() {
     this.user = null;
     console.log("Logged out!");
@@ -123,44 +127,39 @@ async function mainMenu() {
   if (!atm.user) {
     const user = generateRandomUser();
     atm.user = user;
-    console.log(chalk.greenBright("Welcome your randomly auto-generated details are:"))
-    console.log(chalk.bgCyanBright(chalk.blue(`user id: ${user.id}`)))
-    console.log(chalk.bgCyanBright(chalk.blue(`pin: ${user.pin}`)))
-    console.log(chalk.greenBright(`Login to continue and start using SJ's free ATM service!`))
+    console.log(
+      chalk.greenBright("Welcome your randomly auto-generated details are:")
+    );
+    console.log(chalk.bgCyanBright(chalk.blue(`user id: ${user.id}`)));
+    console.log(chalk.bgCyanBright(chalk.blue(`pin: ${user.pin}`)));
+    console.log(
+      chalk.greenBright(
+        `Login to continue and start using SJ's free ATM service!`
+      )
+    );
   }
   const { option } = await inquirer.prompt({
-    type: 'list',
-    name: 'option',
-    message: 'Select an option:',
-    choices: [
-      'Login',
-      'Check Balance',
-      'Deposit',
-      'Withdraw',
-      'Logout'
-    ]
+    type: "list",
+    name: "option",
+    message: "Select an option:",
+    choices: ["Login", "Check Balance", "Deposit", "Withdraw", "Logout"],
   });
-  if (option === 'Login') {
+  if (option === "Login") {
     await atm.login();
     mainMenu();
-  }
-  else if (option === 'Check Balance') {
+  } else if (option === "Check Balance") {
     atm.checkBalance();
     checkContinue();
-  }
-  else if (option === 'Deposit') {
+  } else if (option === "Deposit") {
     await atm.deposit();
     checkContinue();
-  }
-  else if (option === 'Withdraw') {
+  } else if (option === "Withdraw") {
     await atm.withdraw();
     checkContinue();
-  }
-  else if (option === 'Logout') {
+  } else if (option === "Logout") {
     atm.logout();
     exit();
-  }
-  else {
+  } else {
     console.log("Invalid option!");
     mainMenu();
   }
@@ -170,14 +169,15 @@ mainMenu();
 
 async function checkContinue() {
   // Prompt the user to continue
-  await inquirer.prompt([
-    {
-      type: 'confirm',
-      name: 'continue',
-      message: 'Do you want to continue?',
-      default: true
-    }
-  ])
+  await inquirer
+    .prompt([
+      {
+        type: "confirm",
+        name: "continue",
+        message: "Do you want to continue?",
+        default: true,
+      },
+    ])
     .then((answers) => {
       if (answers.continue) {
         mainMenu();
